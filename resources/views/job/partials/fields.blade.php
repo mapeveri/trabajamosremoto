@@ -15,7 +15,7 @@
 
 <div class="form-group">
     {!! Form::label('subcategory_id', 'Sub Categoría', ['for' => 'subcategory_id'] ) !!}
-    {!! Form::select('subcategory_id', $subcategories, null, ['class' => 'form-control', 'multiple', 'required', 'style' => 'width: 40%', 'name' => 'subcategories[]']) !!}
+    {!! Form::select('subcategory_id[]', $subcategories, $subcategories_select, ['id' => 'subcategory_id', 'class' => 'form-control', 'multiple', 'required', 'style' => 'width: 40%']) !!}
 </div>
 
 <script>

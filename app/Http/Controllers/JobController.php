@@ -30,9 +30,12 @@ class JobController extends Controller
         $categories = $this->getCategories();
         $categories = $categories->prepend('', '');
         $subcategories = [];
+        $subcategories_select = [];
+
         return view('job.create')
             ->with('categories', $categories)
-            ->with('subcategories', $subcategories);
+            ->with('subcategories', $subcategories)
+            ->with('subcategories_select', $subcategories_select);
     }
 
     /**
@@ -74,11 +77,13 @@ class JobController extends Controller
         $categories = $this->getCategories();
         $categories = $categories->prepend('', '');
         $subcategories = $this->getSubCategories($job->category_id);
+        $subcategories_select = $job->subcategories->pluck('id')->toArray();
 
         return view('job.edit')
             ->with('job', $job)
             ->with('categories', $categories)
-            ->with('subcategories', $subcategories);
+            ->with('subcategories', $subcategories)
+            ->with('subcategories_select', $subcategories_select);
     }
 
     /**
@@ -104,7 +109,7 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        Job::destroy($job);
+        Job::destroy($job->id);
         return redirect()->route('home');
     }
 
@@ -114,13 +119,13 @@ class JobController extends Controller
             'title' => 'required',
             'content' => 'required',
             'category_id' => 'required',
-            'subcategories' => 'required'
+            'subcategory_id' => 'required'
         ];
         $niceNames = [
             'title' => 'Título',
             'content' => 'Contenido',
             'category_id' => 'Categoría',
-            'subcategories' => 'Sub Categoría'
+            'subcategory_id' => 'Sub Categoría'
         ];
 
         $this->validate($request, $rules, [], $niceNames);
@@ -135,7 +140,7 @@ class JobController extends Controller
         $job->user_id = \Auth::user()->id;
         $job->save();
 
-        $job->subcategories()->attach($request->get('subcategories'));
+        $job->subcategories()->attach($request->get('subcategory_id'));
     }
 
     private function getCategories()
