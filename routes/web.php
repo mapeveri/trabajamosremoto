@@ -11,6 +11,11 @@
 |
 */
 
+// Id Only numeric
+Route::pattern('id', '\d+');
+// Slug characters valid
+Route::pattern('slug', '[a-z0-9-]+');
+
 // Authentication routes
 Auth::routes();
 
@@ -20,7 +25,6 @@ Route::get('/', 'HomeController@index')->name('home');
 // For manage jobs
 Route::resource('jobs', 'JobController')->except(['index', 'show']);
 Route::get('jobs/{id}/{slug}', 'JobController@show')->name('jobs.show');
-
 
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
