@@ -50,7 +50,7 @@ class SubCategoryController extends Controller
 
     public function edit($id)
     {
-        $subcategory = SubCategory::find($id);
+        $subcategory = SubCategory::findOrFail($id);
         $categories = $this->getCategories();
 
         return view('admin.subcategory.edit')
@@ -62,7 +62,7 @@ class SubCategoryController extends Controller
     {
         $this->validateForm($request);
 
-        $subcategory = SubCategory::find($id);
+        $subcategory = SubCategory::findOrFail($id);
         $this->saveData($subcategory, $request);
 
         return redirect()->route('subcategories.index');

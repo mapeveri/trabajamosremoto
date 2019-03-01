@@ -2,12 +2,14 @@
 
 @section('content')
     <div class="container">
-        @if (auth()->user()->id == $job->user_id)
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('jobs.edit', $job->id) }}" role="button">Editar</a>
-                <a class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteJob" role="button" style="color: white">Eliminar</a>
-            </div>
-            <br><br><br>
+        @if (Auth::check())
+            @if (auth()->user()->id == $job->user_id)
+                <div class="pull-right">
+                    <a class="btn btn-primary" href="{{ route('jobs.edit', $job->id) }}" role="button">Editar</a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteJob" role="button" style="color: white">Eliminar</a>
+                </div>
+                <br><br><br>
+            @endif
         @endif
 
         <div class="panel panel-default">

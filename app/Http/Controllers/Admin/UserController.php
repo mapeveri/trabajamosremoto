@@ -26,13 +26,13 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('admin.user.edit')->with('user', $user);
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $this->saveData($user, $request);
 
         return redirect()->route('users.index');

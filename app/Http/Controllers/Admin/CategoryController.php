@@ -42,7 +42,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         return view('admin.category.edit')->with('category', $category);
     }
 
@@ -50,7 +50,7 @@ class CategoryController extends Controller
     {
         $this->validateForm($request);
 
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         $this->saveData($category, $request);
 
         return redirect()->route('categories.index');
