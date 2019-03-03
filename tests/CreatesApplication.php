@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\User;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Console\Kernel as Artisan;
 use Illuminate\Contracts\Console\Kernel;
 
@@ -10,6 +11,8 @@ trait CreatesApplication
 {
     protected $coverPath;
     protected $mediaPath = __DIR__.'/profiles';
+
+    protected static $migrationsRun = false;
 
     /** @var Artisan */
     private $artisan;
@@ -40,8 +43,21 @@ trait CreatesApplication
 
     private function prepareForTests()
     {
-        if (!file_exists($this->coverPath)) {
-            mkdir($this->coverPath, 0777, true);
+        Config::set('database.default', 'mysql_testing');
+
+        if (!static::$migrationsRun)
+        {
+            $this->artisan->call('migrate:refresh', ['--database' => 'mysql_testing']);
+
+            if (!User::all()->count()) {
+                $this->artisan->call('db:seed', ['--database' => 'mysql_testing']);
+            }
+
+            if (!file_exists($this->coverPath)) {
+                mkdir($this->coverPath, 0777, true);
+            }
+
+            static::$migrationsRun = true;
         }
     }
 }

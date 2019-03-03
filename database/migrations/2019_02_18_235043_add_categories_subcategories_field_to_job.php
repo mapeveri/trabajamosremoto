@@ -13,11 +13,6 @@ class AddCategoriesSubcategoriesFieldToJob extends Migration
      */
     public function up()
     {
-        Schema::table('jobs', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned()->nullable();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-        });
-
         Schema::create('jobs_subcategories', function(Blueprint $table)
         {
             $table->integer('subcategory_id')->unsigned()->nullable();
@@ -39,8 +34,7 @@ class AddCategoriesSubcategoriesFieldToJob extends Migration
      */
     public function down()
     {
-        Schema::table('job', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('jobs_subcategories');
+
     }
 }

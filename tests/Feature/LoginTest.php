@@ -33,11 +33,9 @@ class LoginTest extends TestCase
 
     public function testNotAuthenticateUserCredentialsInvalid()
     {
-        $user = factory('App\User')->create();
-
         $credentials = [
             "email" => "users@mail.com",
-            "password" => "secret"
+            "password" => "secrett"
         ];
 
         $this->assertInvalidCredentials($credentials);
@@ -45,7 +43,6 @@ class LoginTest extends TestCase
 
     public function testEmailRequiredForAuthenticate()
     {
-        $user = factory('App\User')->create();
         $credentials = [
             "email" => null,
             "password" => "secret"
@@ -59,7 +56,6 @@ class LoginTest extends TestCase
 
     public function testPasswordRequiredForAuthenticate()
     {
-        $user = factory('App\User')->create();
         $credentials = [
             "email" => "zaratedev@gmail.com",
             "password" => null
