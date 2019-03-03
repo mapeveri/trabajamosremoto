@@ -8,8 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginTest extends TestCase
 {
-    /** test */
-    public function it_visit_page_of_login()
+    public function testVisitPageLogin()
     {
         $response = $this->get('/login');
 
@@ -17,24 +16,22 @@ class LoginTest extends TestCase
         $response->assertSee('Login');
     }
 
-    /** test */
-    public function authenticated_to_a_user()
+    public function testAuthenticatedUser()
     {
-        $user = factory('App\User')->create();
+        $user = \App\User::all()->first();
 
         $this->get('/login')->assertSee('Login');
         $credentials = [
-            "email" => "user@mail.com",
-            "password" => "secret"
+            "email" => $user->email,
+            "password" => 'secret'
         ];
 
         $response = $this->post('/login', $credentials);
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/');
         $this->assertCredentials($credentials);
     }
 
-    /** @test */
-    public function not_authenticate_to_a_user_with_credentials_invalid()
+    public function testNotAuthenticateUserCredentialsInvalid()
     {
         $user = factory('App\User')->create();
 
@@ -46,8 +43,7 @@ class LoginTest extends TestCase
         $this->assertInvalidCredentials($credentials);
     }
 
-    /** @test */
-    public function the_email_is_required_for_authenticate()
+    public function testEmailRequiredForAuthenticate()
     {
         $user = factory('App\User')->create();
         $credentials = [
@@ -61,8 +57,7 @@ class LoginTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_password_is_required_for_authenticate()
+    public function testPasswordRequiredForAuthenticate()
     {
         $user = factory('App\User')->create();
         $credentials = [
@@ -71,14 +66,12 @@ class LoginTest extends TestCase
         ];
 
         $response = $this->from('/login')->post('/login', $credentials);
-        $response->assertRedirect('/login')
-            ->assertSessionHasErrors([
-                'password' => 'The password field is required.',
+        $response->assertRedirect('/login')->assertSessionHasErrors([
+            'password' => 'The password field is required.',
             ]);
     }
 
-    /** @test */
-    public function a_user_can_logout()
+    public function testUserCanLogout()
     {
         $this->signIn(factory('App\User')->create());
         $response = $this->post('/logout');
@@ -86,8 +79,7 @@ class LoginTest extends TestCase
         $this->assertGuest();
     }
 
-    /** @test */
-    public function as_user_cannot_logout_when_not_authenticated()
+    public function testUserCannotLogoutWhenNotAuthenticated()
     {
         $response = $this->post('/logout');
         $response->assertRedirect('/');

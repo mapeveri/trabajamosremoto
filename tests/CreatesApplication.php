@@ -40,12 +40,6 @@ trait CreatesApplication
 
     private function prepareForTests()
     {
-        $this->artisan->call('migrate', array('-n' => true));
-
-        if (!User::all()->count()) {
-            $this->artisan->call('db:seed', array('-n' => true));
-        }
-
         if (!file_exists($this->coverPath)) {
             mkdir($this->coverPath, 0777, true);
         }

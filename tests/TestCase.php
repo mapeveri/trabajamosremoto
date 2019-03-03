@@ -15,10 +15,4 @@ abstract class TestCase extends BaseTestCase
         $this->actingAs($user);
         return $this;
     }
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->prepareForTests();
-    }
 }
