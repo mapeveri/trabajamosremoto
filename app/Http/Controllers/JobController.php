@@ -58,6 +58,7 @@ class JobController extends Controller
      * Display the specified resource.
      *
      * @param $id
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
     public function show($id, $slug)
@@ -111,6 +112,30 @@ class JobController extends Controller
     {
         Job::destroy($job->id);
         return redirect()->route('home');
+    }
+
+    /**
+     * Get related jobs to category
+     *
+     * @param  $id Id category
+     * @param  $slug slug category
+     * @return \Illuminate\Http\Response
+     */
+    public function showCategory($id, $slug)
+    {
+        // Get category to get jobs
+        $category = Category::where('id', $id)->where('slug', $slug)->firstOrFail();
+
+        // Get jobs
+        $jobs = Job::where('category_id', $id)
+            ->orderBy('created_at', 'DESC')
+            ->with('category')
+            ->with('subcategories')
+            ->paginate(15);
+
+        return view('job.showCategory')
+            ->with('category', $category)
+            ->with('jobs', $jobs);
     }
 
     private function validateForm(Request $request)

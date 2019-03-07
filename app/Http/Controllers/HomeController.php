@@ -14,14 +14,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::with(
-            array(
-                'jobs' => function($query) {
-                    $query->orderBy('jobs.created_at', 'DESC');
-                },
-                'jobs.subcategories'
-            )
-        )->get();
+        $categories = Category::with([
+            'jobs' => function($query) {
+                $query->orderBy('jobs.created_at', 'DESC');
+            },
+            'jobs.subcategories'
+        ])->get();
 
         return view('home')->with('categories', $categories);
     }

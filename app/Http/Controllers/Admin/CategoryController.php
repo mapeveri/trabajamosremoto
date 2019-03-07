@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Category;
@@ -65,6 +66,7 @@ class CategoryController extends Controller
     private function saveData($category, Request $request)
     {
         $category->name = $request->input('name');
+        $category->slug = Str::slug($category->name, '-');
         $category->save();
     }
 

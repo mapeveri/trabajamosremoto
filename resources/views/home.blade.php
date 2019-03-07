@@ -23,27 +23,12 @@
                         <hr>
                         @if ($category->jobs->count() > 0)
                             <ul>
-                                @foreach($category->jobs as $job)
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><a href="{{ route('jobs.show', ['id' => $job->id, 'slug' => $job->slug]) }}">{{ $job->title }}</a></h5>
-                                            <p><small class="card-text">
-                                                {{ str_limit(preg_replace("/\s|&nbsp;/", ' ', strip_tags($job->content)), $limit = 350, $end = '...') }}
-                                            </small></p>
-
-
-                                            <div class="pull-left">
-                                            @foreach($job->subcategories as $subcategory)
-                                                <span class="badge badge-dark">{{ $subcategory->name }}</span>
-                                            @endforeach
-                                            </div>
-                                            <div class="pull-right">
-                                                <small>{{ date('d-m-Y', strtotime($job->created_at)) }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
+                                @foreach($category->jobs->take(6) as $job)
+                                    @include('job.partials.job')
                                 @endforeach
+
+                                <a class="btn btn-primary pull-right" href="{{ route('jobs.show_category', ['id' => $category->id, 'slug' => $category->slug]) }}" role="button">Ver más ofertas de {{ $category->name }}</a>
+                                <br>
                             </ul>
                         @endif
                     @endforeach
