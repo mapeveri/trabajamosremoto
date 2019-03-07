@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->prepareForTests();
