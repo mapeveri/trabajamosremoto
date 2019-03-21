@@ -27,7 +27,9 @@
 
                         <hr>
                         @foreach($job->subcategories as $subcategory)
-                            <span class="badge badge-dark">{{ $subcategory->name }}</span>
+                            <span class="badge badge-dark">
+                                <a href="{{ route('jobs.show_subcategory', ['id' => $job->category_id, 'slug' => $job->category->slug, 'subcategory_id' => $subcategory->id, 'subcategory_slug' => $subcategory->slug]) }}">{{ $subcategory->name }}</a>
+                            </span>
                         @endforeach
                     </div>
                 </div>

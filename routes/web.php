@@ -26,6 +26,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::resource('jobs', 'JobController')->except(['index', 'show']);
 Route::get('jobs/{id}/{slug}', 'JobController@show')->name('jobs.show');
 Route::get('jobs/category/{id}/{slug}', 'JobController@showCategory')->name('jobs.show_category');
+Route::get('jobs/category/{id}/{slug}/{subcategory_id}/{subcategory_slug}', 'JobController@showSubCategory')->name('jobs.show_subcategory');
 
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {

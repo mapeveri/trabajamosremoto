@@ -19,7 +19,7 @@
 
 
                     @foreach($categories as $category)
-                        <h3>{{ $category->name }}</h3>
+                        <h3><a href="{{ route('jobs.show_category', ['id' => $category->id, 'slug' => $category->slug]) }}">{{ $category->name }}</a></h3>
                         <hr>
                         @if ($category->jobs->count() > 0)
                             <ul>

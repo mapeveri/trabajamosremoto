@@ -17,7 +17,7 @@ class JobController extends Controller
     */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show', 'showCategory']]);
+        $this->middleware('auth', ['except' => ['show', 'showCategory', 'showSubCategory']]);
     }
 
     /**
@@ -135,6 +135,41 @@ class JobController extends Controller
 
         return view('job.showCategory')
             ->with('category', $category)
+            ->with('jobs', $jobs);
+    }
+
+    /**
+     * Get related jobs to subcategory
+     *
+     * @param  $id Id category
+     * @param  $slug slug category
+     * @param  $subcategory_id Id subcategory
+     * @param  $subcategory_slug slug subcategory
+     * @return \Illuminate\Http\Response
+     */
+    public function showSubCategory($id, $slug, $subcategory_id, $subcategory_slug)
+    {
+        // Get subcategory to get jobs
+        $subcategory = SubCategory::where('id', $subcategory_id)
+            ->where('slug', $subcategory_slug)
+            ->whereHas('category', function($q) use($slug) {
+                $q->where('slug', $slug);
+            })
+            ->with('category')
+            ->firstOrFail();
+
+        // Get jobs
+        $jobs = Job::where('category_id', $id)
+            ->whereHas('subcategories', function($q) use($subcategory_id) {
+                $q->where('subcategory_id', $subcategory_id);
+            })
+            ->with('category')
+            ->with('subcategories')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(15);
+
+        return view('job.showSubCategory')
+            ->with('subcategory', $subcategory)
             ->with('jobs', $jobs);
     }
 

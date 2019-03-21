@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h1><a href="/">Trabajos</a> / {{ $category->name }}</h1>
+            <h1><a href="/">Trabajos</a> / <a href="{{ route('jobs.show_category', ['id' => $subcategory->category->id, 'slug' => $subcategory->category->slug]) }}">{{ $subcategory->category->name }}</a> / {{ $subcategory->name }}</h1>
             <div class="card">
                 <div class="card-body">
                     @if (session('status'))
@@ -13,7 +13,7 @@
                         </div>
                     @endif
 
-                    <h3>{{ $category->name }}</h3>
+                    <h3>{{ $subcategory->name }}</h3>
                     <hr>
                     @if ($jobs->count() > 0)
                         <ul>
