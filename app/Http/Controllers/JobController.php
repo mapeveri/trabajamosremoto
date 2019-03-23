@@ -200,7 +200,8 @@ class JobController extends Controller
         $job->user_id = \Auth::user()->id;
         $job->save();
 
-        $job->subcategories()->attach($request->get('subcategory_id'));
+        $subcategory_id = $request->get('subcategory_id');
+        $job->subcategories()->sync($subcategory_id);
     }
 
     private function getCategories()
