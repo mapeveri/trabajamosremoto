@@ -28,6 +28,9 @@ Route::get('jobs/{id}/{slug}', 'JobController@show')->name('jobs.show');
 Route::get('jobs/category/{id}/{slug}', 'JobController@showCategory')->name('jobs.show_category');
 Route::get('jobs/category/{id}/{slug}/{subcategory_id}/{subcategory_slug}', 'JobController@showSubCategory')->name('jobs.show_subcategory');
 
+// Profile
+Route::get('profile', 'ProfileController@show')->name('profile');;
+
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/', 'Admin\AdminHomeController@index')->name('admin_home');
