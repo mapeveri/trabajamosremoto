@@ -29,7 +29,9 @@ Route::get('jobs/category/{id}/{slug}', 'JobController@showCategory')->name('job
 Route::get('jobs/category/{id}/{slug}/{subcategory_id}/{subcategory_slug}', 'JobController@showSubCategory')->name('jobs.show_subcategory');
 
 // Profile
-Route::get('profile', 'ProfileController@show')->name('profile');;
+Route::get('profile/{id?}', 'ProfileController@show')->name('profile');
+Route::get('profile/edit', 'ProfileController@show_profile_form')->name('profile.form');
+Route::put('profile/edit', 'ProfileController@update')->name('profile.update');
 
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
