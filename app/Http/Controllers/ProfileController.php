@@ -21,14 +21,15 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  $username Username profile
      * @return \Illuminate\Http\Response
      */
-    public function show($id=null)
+    public function show($username=null)
     {
-        if ($id === null) {
+        if ($username === null) {
             $user = \Auth::user();
         } else {
-            $user = User::findOrFail($id);
+            $user = User::where('username', $username)->firstOrFail();
         }
 
         return view('profile.show')->with('user', $user);

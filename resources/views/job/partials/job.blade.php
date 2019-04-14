@@ -1,6 +1,8 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title"><a href="{{ route('jobs.show', ['id' => $job->id, 'slug' => $job->slug]) }}">{{ $job->title }}</a></h5>
+        <small>Por: <a href="{{ route('profile', ['username' => $job->user->username]) }}">{{ $job->user->name }}</a></small>
+        <hr>
         <p><small class="card-text">
             {{ str_limit(preg_replace("/\s|&nbsp;/", ' ', strip_tags($job->content)), $limit = 350, $end = '...') }}
         </small></p>

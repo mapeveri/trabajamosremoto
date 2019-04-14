@@ -19,7 +19,8 @@ class HomeController extends Controller
                 $query->orderBy('jobs.created_at', 'DESC');
             },
             'jobs.category',
-            'jobs.subcategories'
+            'jobs.subcategories',
+            'jobs.user'
         ])->get();
 
         return view('home')->with('categories', $categories);

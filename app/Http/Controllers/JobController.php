@@ -131,6 +131,7 @@ class JobController extends Controller
             ->orderBy('created_at', 'DESC')
             ->with('category')
             ->with('subcategories')
+            ->with('user')
             ->paginate(15);
 
         return view('job.showCategory')
@@ -165,6 +166,7 @@ class JobController extends Controller
             })
             ->with('category')
             ->with('subcategories')
+            ->with('user')
             ->orderBy('created_at', 'DESC')
             ->paginate(15);
 

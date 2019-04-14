@@ -11,6 +11,11 @@ class Job extends Model
         return $this->belongsTo('App\Category');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function subcategories()
     {
         return $this->belongsToMany('App\SubCategory', 'jobs_subcategories', 'job_id', 'subcategory_id');

@@ -21,6 +21,7 @@
                         </div>
                         <h1 class="card-title">{{ $job->title }}</h1>
 
+                        <small>Por: <a href="{{ route('profile', ['username' => $job->user->username]) }}">{{ $job->user->name }}</a></small>
                         <hr>
 
                         <p class="card-text"> {!! $job->content !!} </p>
