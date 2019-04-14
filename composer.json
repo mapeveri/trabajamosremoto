@@ -61,7 +61,7 @@
             "@php artisan key:generate --ansi"
         ],
         "tests": [
-            "SHELL_INTERACTIVE=1 vendor/bin/phpunit --colors=always"
+            "SHELL_INTERACTIVE=1 vendor/bin/phpunit --colors=always --coverage-html ./coverage --coverage-text"
         ]
     }
 }
