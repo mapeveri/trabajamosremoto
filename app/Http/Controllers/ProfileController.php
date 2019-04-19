@@ -27,7 +27,11 @@ class ProfileController extends Controller
     public function show($username=null)
     {
         if ($username === null) {
-            $user = \Auth::user();
+            if (\Auth::check()) {
+                $user = \Auth::user();
+            } else {
+                abort(404);
+            }
         } else {
             $user = User::where('username', $username)->firstOrFail();
         }
