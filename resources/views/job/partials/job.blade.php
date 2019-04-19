@@ -1,16 +1,20 @@
 <div class="card">
-    <div class="card-body">
+    <div class="card-header">
         <h5 class="card-title"><a href="{{ route('jobs.show', ['id' => $job->id, 'slug' => $job->slug]) }}">{{ $job->title }}</a></h5>
-        <small>Por: <a href="{{ route('profile', ['username' => $job->user->username]) }}">{{ $job->user->name }}</a></small>
-        <hr>
+    </div>
+    <div class="card-body">
         <p><small class="card-text">
             {{ str_limit(preg_replace("/\s|&nbsp;/", ' ', strip_tags($job->content)), $limit = 350, $end = '...') }}
         </small></p>
 
+        <hr>
+        <small>Por: <a href="{{ route('profile', ['username' => $job->user->username]) }}">{{ $job->user->name }}</a></small>
+        <br>
+
         <div class="pull-left">
         @foreach($job->subcategories as $subcategory)
             <span class="badge badge-dark">
-                <a href="{{ route('jobs.show_subcategory', ['id' => $job->category_id, 'slug' => $job->category->slug, 'subcategory_id' => $subcategory->id, 'subcategory_slug' => $subcategory->slug]) }}">{{ $subcategory->name }}</a>
+                <a class="white" href="{{ route('jobs.show_subcategory', ['id' => $job->category_id, 'slug' => $job->category->slug, 'subcategory_id' => $subcategory->id, 'subcategory_slug' => $subcategory->slug]) }}">{{ $subcategory->name }}</a>
             </span>
         @endforeach
         </div>
