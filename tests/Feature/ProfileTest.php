@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProfileTest extends TestCase
 {
@@ -41,7 +40,8 @@ class ProfileTest extends TestCase
      */
     public function testProfileUserPublic()
     {
-        $user = \App\User::all()->first();
+        $profile = \App\Profile::all()->first();
+        $user = $profile->user;
         $response = $this->get('/profile/' . $user->username);
 
         $response->assertStatus(200);
