@@ -23,6 +23,7 @@ class JobsTableSeeder extends Seeder
             'content' => 'Test post',
             'user_id' => $user->id,
             'category_id' => $category->id,
+            'contact' => 'test@test.com',
         ]);
 
         $job = \App\Job::all()->first();

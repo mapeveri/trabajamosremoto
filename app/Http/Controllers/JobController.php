@@ -4,20 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Category;
 use App\Job;
-use App\SubCategory;
+use App\Services\CategoryService;
+use App\Services\JobService;
+use App\Services\SubCategoryService;
 
 class JobController extends Controller
 {
+    /**
+    * @var JobService
+    */
+    protected $jobService;
+
+    /**
+    * @var CategoryService
+    */
+    protected $categoryService;
+
+    /**
+    * @var SubCategoryService
+    */
+    protected $subCategoryService;
+
+
     /**
     * Create a new controller instance.
     *
     * @return void
     */
-    public function __construct()
+    public function __construct(JobService $jService, CategoryService $cService, SubCategoryService $scService)
     {
         $this->middleware('auth', ['except' => ['show', 'showCategory', 'showSubCategory']]);
+
+        $this->jobService = $jService;
+        $this->categoryService = $cService;
+        $this->subCategoryService = $scService;
     }
 
     /**
@@ -27,8 +48,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        $categories = $this->getCategories();
-        $categories = $categories->prepend('', '');
+        $categories = $this->categoryService->getCategoriesCombo();
         $subcategories = [];
         $subcategories_select = [];
 
@@ -63,7 +83,7 @@ class JobController extends Controller
      */
     public function show($id, $slug)
     {
-        $job = Job::where('id', $id)->where('slug', $slug)->with('subcategories')->firstOrFail();
+        $job = $this->jobService->getJob($id, $slug);
         return view('job.show')->with('job', $job);
     }
 
@@ -75,9 +95,8 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        $categories = $this->getCategories();
-        $categories = $categories->prepend('', '');
-        $subcategories = $this->getSubCategories($job->category_id);
+        $categories = $this->categoryService->getCategoriesCombo();
+        $subcategories = $this->subCategoryService->getSubCategoriesCombo($job->category_id);
         $subcategories_select = $job->subcategories->pluck('id')->toArray();
 
         return view('job.edit')
@@ -124,15 +143,10 @@ class JobController extends Controller
     public function showCategory($id, $slug)
     {
         // Get category to get jobs
-        $category = Category::where('id', $id)->where('slug', $slug)->firstOrFail();
+        $category = $this->categoryService->getCategory($id, $slug);
 
         // Get jobs
-        $jobs = Job::where('category_id', $id)
-            ->orderBy('created_at', 'DESC')
-            ->with('category')
-            ->with('subcategories')
-            ->with('user')
-            ->paginate(15);
+        $jobs = $this->jobService->getJobsCategory($id);
 
         return view('job.showCategory')
             ->with('category', $category)
@@ -151,24 +165,10 @@ class JobController extends Controller
     public function showSubCategory($id, $slug, $subcategory_id, $subcategory_slug)
     {
         // Get subcategory to get jobs
-        $subcategory = SubCategory::where('id', $subcategory_id)
-            ->where('slug', $subcategory_slug)
-            ->whereHas('category', function($q) use($slug) {
-                $q->where('slug', $slug);
-            })
-            ->with('category')
-            ->firstOrFail();
+        $subcategory = $this->subCategoryService->getSubCategories($slug, $subcategory_id, $subcategory_slug);
 
         // Get jobs
-        $jobs = Job::where('category_id', $id)
-            ->whereHas('subcategories', function($q) use($subcategory_id) {
-                $q->where('subcategory_id', $subcategory_id);
-            })
-            ->with('category')
-            ->with('subcategories')
-            ->with('user')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(15);
+        $jobs = $this->jobService->getJobsSubCategory($id, $subcategory_id);
 
         return view('job.showSubCategory')
             ->with('subcategory', $subcategory)
@@ -207,17 +207,5 @@ class JobController extends Controller
 
         $subcategory_id = $request->get('subcategory_id');
         $job->subcategories()->sync($subcategory_id);
-    }
-
-    private function getCategories()
-    {
-        $categories = Category::pluck('name', 'id');
-        return $categories;
-    }
-
-    private function getSubCategories($category_id)
-    {
-        $subcategories = SubCategory::where('category_id', $category_id)->pluck('name', 'id');
-        return $subcategories;
     }
 }

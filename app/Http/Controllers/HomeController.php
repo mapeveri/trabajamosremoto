@@ -3,10 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Services\CategoryService;
 
 class HomeController extends Controller
 {
+    /**
+    * @var categoryService
+    */
+    protected $categoryService;
+
+    /**
+    * Create a new controller instance.
+    *
+    * @return void
+    */
+    public function __construct(CategoryService $cService)
+    {
+        $this->categoryService = $cService;
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -14,14 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::with([
-            'jobs' => function($query) {
-                $query->orderBy('jobs.created_at', 'DESC');
-            },
-            'jobs.category',
-            'jobs.subcategories',
-            'jobs.user'
-        ])->get();
+        $categories = $this->categoryService->getCategories();
 
         return view('home')->with('categories', $categories);
     }
