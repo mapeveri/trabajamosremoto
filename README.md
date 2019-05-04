@@ -25,12 +25,6 @@ Website trabajamosremoto.com
     php artisan serve
     ```
 
-NOTE: For clear configuration and clear cache, run:
-
-    php artisan cache:clear
-    php artisan config:clear
-    php artisan config:cache
-
 ## Testing
 
 For run the tests:
