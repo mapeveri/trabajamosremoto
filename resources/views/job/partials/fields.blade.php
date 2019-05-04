@@ -9,6 +9,11 @@
 </div>
 
 <div class="form-group">
+    {!! Form::label('contact', 'Email de contacto', ['for' => 'email'] ) !!}
+    {!! Form::email('contact', null , ['class' => 'form-control', 'style' => 'width: 40%', 'required', 'id' => 'contacto', 'placeholder' => 'Escribe el email de contacto...' ]  ) !!}
+</div>
+
+<div class="form-group">
     {!! Form::label('category_id', 'Categoría', ['for' => 'category_id'] ) !!}
     {!! Form::select('category_id', $categories, null, ['class' => 'form-control', 'required', 'style' => 'width: 40%']) !!}
 </div>

@@ -180,12 +180,14 @@ class JobController extends Controller
         $rules = [
             'title' => 'required',
             'content' => 'required',
+            'contact' => 'required',
             'category_id' => 'required',
             'subcategory_id' => 'required'
         ];
         $niceNames = [
             'title' => 'Título',
             'content' => 'Contenido',
+            'contact' => 'Contacto',
             'category_id' => 'Categoría',
             'subcategory_id' => 'Sub Categoría'
         ];
@@ -200,6 +202,7 @@ class JobController extends Controller
         $job->content = $request->input('content');
         $job->category_id = $request->input('category_id');
         $job->user_id = \Auth::user()->id;
+        $job->contact = $request->input('contact');
         $job->save();
 
         $subcategory_id = $request->get('subcategory_id');

@@ -25,7 +25,7 @@
                         <hr>
 
                         <p class="card-text"> {!! $job->content !!} </p>
-
+                        <p class="card-text"><b>Contacto:</b> {{ $job->contact }} </p>
                         <hr>
                         @foreach($job->subcategories as $subcategory)
                             <span class="badge badge-dark">
